@@ -1,4 +1,4 @@
-# Tricycle Rider Ontology
+# Fleet Management Ontology
 
 An ontology map showing the properties and relationships between companies, tricycles, riders, fleet owners and fleet managers in a fleet management system.
 
