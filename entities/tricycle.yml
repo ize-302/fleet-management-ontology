@@ -1,0 +1,36 @@
+entity:
+  name: Tricycle
+
+  description: >
+    A tricycle is owned by a company and assigned to a rider by a fleet manager
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    plate_number:
+      type: string
+      unique: true
+
+    engine_number:
+      type: string
+      unique: true
+
+    status:
+      type: TricycleStatus
+
+    condition:
+      type: TricycleCondition
+
+  relationships:
+
+    property_of:
+      target: Company
+      cardinality: one
+
+    assignment:
+      target: Assignment 
+      cardinality: many
+

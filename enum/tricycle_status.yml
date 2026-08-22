@@ -1,0 +1,9 @@
+enum:
+  name: TricycleStatus
+
+  values:
+    - in_service
+    - idle
+    - impounded
+    - retired
+

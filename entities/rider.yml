@@ -1,0 +1,28 @@
+entity:
+  name: Rider
+
+  description: >
+    A rider is a person that is employed by a fleet company. Rider can be employed by just one company and is assigned to a tricycle for a period
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    status:
+      type: RiderStatus
+
+  relationships:
+
+    is:
+      target: Person
+      cardinality: one
+
+    assignment:
+      target: Assignment 
+      cardinality: many
+
+    works_for:
+      target: Company 
+      cardinality: zero..one

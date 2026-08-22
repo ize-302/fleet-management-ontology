@@ -1,0 +1,28 @@
+entity:
+  name: FleetManager
+
+  description: >
+    Manages the fleet and riders of a company on behalf of the fleet owner
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    status:
+      type: FleetManagerStatus
+
+  relationships:
+
+    is:
+      target: Person
+      cardinality: one
+
+    manages:
+      target: Company 
+      cardinality: zero..one
+
+    assigns:
+      target: Assignment
+      cardinality: many

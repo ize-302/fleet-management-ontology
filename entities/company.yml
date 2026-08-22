@@ -1,0 +1,36 @@
+entity:
+  name: Company
+
+  description: >
+    A business that manages tricycle fleets, owned by the fleet owner and managed by fleet manager on behalf of the fleet owner
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    name:
+      type: string
+
+    status:
+      type: CompanyStatus
+    
+  relationships:
+
+    owner:
+      target: FleetOwner
+      cardinality: one
+
+    managed_by:
+      target: FleetManager
+      cardinality: zero..one
+
+    fleet:
+      target: Tricycle
+      cardinality: many
+
+    employs:
+      target: Rider
+      cardinality: many
+

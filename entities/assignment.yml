@@ -1,0 +1,31 @@
+entity:
+  name: Assignment
+
+  description: >
+    Assignment links a company's tricycle to one of its rider at a point in time. Rider can only be assigned to one tricycle at a time. An assignment is done by the fleet manager of the fleet owner. It's meant to serve as audit data in the future 
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    started_at:
+      type: datetime
+
+    ended_at:
+      type: datetime # null = assignment still active and not ended
+
+  relationships:
+
+    assigned_by:
+      target: FleetManager
+      cardinality: one
+
+    rider:
+      target: Rider
+      cardinality: one
+
+    tricycle:
+      target: Tricycle
+      cardinality: one

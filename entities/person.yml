@@ -1,0 +1,42 @@
+entity:
+  name: Person 
+
+  description: >
+    A person's information. A person could be a rider and/or, fleet owner, and/or fleet manager.  
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+    
+    first_name: 
+      type: string
+
+    last_name: 
+      type: string
+
+    email:
+      type: string
+      unique: true
+
+    phone_number:
+      type: string
+
+    address:
+      type: string
+
+  relationships:
+
+    can_be_rider:
+      target: Rider
+      cardinality: zero..one
+
+    can_be_fleet_owner:
+      target: FleetOwner 
+      cardinality: zero..one
+
+    can_be_fleet_manager:
+      target: FleetManager 
+      cardinality: zero..one
+

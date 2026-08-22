@@ -1,0 +1,7 @@
+enum:
+  name: TricycleCondition
+
+  values:
+    - good
+    - needs_repair
+    - damaged

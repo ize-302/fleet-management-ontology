@@ -1,0 +1,25 @@
+entity:
+  name: FleetOwner
+
+  description: >
+    This is the owner of one or more fleet companies. 
+
+  properties:
+
+    id:
+      type: uuid
+      unique: true
+
+    status:
+      type: FleetOwnerStatus
+
+  relationships:
+
+    is:
+      target: Person
+      cardinality: one
+
+    owns:
+      target: Company
+      cardinality: many
+

@@ -1,0 +1,7 @@
+enum:
+  name: CompanyStatus
+
+  values:
+    - active
+    - inactive
+    - suspended

@@ -1,0 +1,7 @@
+enum:
+  name: RiderStatus
+
+  values:
+    - active
+    - inactive
+    - suspended

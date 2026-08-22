@@ -1,0 +1,7 @@
+enum:
+  name: FleetOwnerStatus
+
+  values:
+    - active
+    - inactive
+    - suspended
