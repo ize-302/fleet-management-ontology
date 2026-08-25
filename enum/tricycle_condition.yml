@@ -2,6 +2,6 @@ enum:
   name: TricycleCondition
 
   values:
-    - good
+    - operable
     - needs_repair
-    - damaged
+    - fully_damaged
