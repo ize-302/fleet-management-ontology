@@ -12,13 +12,14 @@ entity:
 
     name:
       type: string
+      constraint: [REGEX:/[a-zA-Z -)(]{2,}/]
 
     status:
       type: CompanyStatus
     
   relationships:
 
-    owner:
+    property_of:
       target: FleetOwner
       cardinality: one
 
@@ -26,11 +27,15 @@ entity:
       target: FleetManager
       cardinality: zero..one
 
-    fleet:
+    owns:
       target: Tricycle
       cardinality: many
 
-    employs:
+    employer_of:
       target: Rider
+      cardinality: many
+
+    owns:
+      target: Assignment
       cardinality: many
 
