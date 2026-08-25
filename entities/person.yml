@@ -12,11 +12,11 @@ entity:
     
     first_name: 
       type: string
-      constraint: [REGEX:/^[a-zA-Z -]{2,}/]
+      constraint: [REGEX:/^[a-zA-Z -]{2,}$/]
 
     last_name: 
       type: string
-      constraint: [REGEX:/^[a-zA-Z -]{2,}/]
+      constraint: [REGEX:/^[a-zA-Z -]{2,}$/]
 
     email:
       type: string
@@ -29,7 +29,8 @@ entity:
 
     address:
       type: string
-      constraint: [JSON:`{house_number:string,landmark:string,street_name:string,city_town:string,zipcode:string`]
+      constraint: [JSON:`{house_number:string;landmark:string;street_name:string;city_town:string;zipcode:string;country
+      code:string`]
 
   relationships:
 
