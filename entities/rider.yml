@@ -19,7 +19,7 @@ entity:
       target: Person
       cardinality: one
 
-    assignment:
+    utilized_for:
       target: Assignment 
       cardinality: many
 
