@@ -28,11 +28,11 @@ Cardinality is worth reading closely, because most of the model's rules live the
 
 - **`one`**: exactly one, and it is required. `Tricycle.property_of → Company (one)` means every tricycle belongs to a company. There is no such thing as an unowned tricycle here.
 - **`zero..one`**: at most one, and it is optional. `Rider.works_for → Company (zero..one)` means a rider may currently be between jobs.
-- **`many`**: any number, including none. `Company.fleet → Tricycle (many)`.
+- **`many`**: any number, including none. `Company.owns → Tricycle (many)`.
 
 ### Relationships are written from both sides
 
-Most links appear twice, once on each entity. `Company.fleet → Tricycle (many)` and `Tricycle.property_of → Company (one)` are the same link seen from opposite ends. Reading both gives you the full rule: **a company has many tricycles, and each tricycle belongs to exactly one company.**
+Most links appear twice, once on each entity. `Company.owns → Tricycle (many)` and `Tricycle.property_of → Company (one)` are the same link seen from opposite ends. Reading both gives you the full rule: **a company has many tricycles, and each tricycle belongs to exactly one company.**
 
 The sections below list each entity's properties and the relationships that start from it.
 
@@ -53,11 +53,12 @@ A person could be any of those, several of them, or none. So `Rider`, `FleetOwne
 The **Company** is what ties the operation together. A fleet owner does not own tricycles directly. They own companies, and the company holds the fleet and the riders. A fleet manager runs the company day to day and is the one who assigns tricycles to riders.
 
 ```
-FleetOwner ──owns──▶ Company ──fleet────▶ Tricycle
-                        ▲     ──employs──▶ Rider
+FleetOwner ──owns──▶ Company ──owns────▶ Tricycle
+                        |   \──employs──▶ Rider
                         │
                    managed_by
                         │
+                        ▲ 
                    FleetManager ──assigns──▶ Assignment
 ```
 
@@ -76,9 +77,9 @@ A person's information. A person could be a rider and/or fleet owner and/or flee
 | phone_number | string |        |
 | address      | string |        |
 
-- `can_be_rider` → **Rider** (zero..one)
-- `can_be_fleet_owner` → **FleetOwner** (zero..one)
-- `can_be_fleet_manager` → **FleetManager** (zero..one)
+- `can_be` → **Rider** (zero..one) `in_service_of` → **Company** (zero..one)
+- `can_be` → **FleetOwner** (zero..one) `in_service_of` → **Company** (many)
+- `can_be` → **FleetManager** (zero..one) `in_service_of` → **Company** (zero..one)
 
 ### FleetOwner
 
@@ -117,10 +118,11 @@ A business that manages tricycle fleets, owned by the fleet owner and managed by
 | name     | string        |        |
 | status   | CompanyStatus |        |
 
-- `owner` → **FleetOwner** (one)
+- `property_of` → **FleetOwner** (one)
 - `managed_by` → **FleetManager** (zero..one)
-- `fleet` → **Tricycle** (many)
-- `employs` → **Rider** (many)
+- `owns` → **Tricycle** (many)
+- `employer_of` → **Rider** (many)
+- `owns` → **Assignment** (many)
 
 ### Rider
 
@@ -132,8 +134,9 @@ A rider is a person that is employed by a fleet company. A rider can be employed
 | status   | RiderStatus |        |
 
 - `is` → **Person** (one)
+- `operates` → **Tricycle** (one) `in_service_of` → **Assignment** (one)
 - `works_for` → **Company** (zero..one)
-- `assignment` → **Assignment** (many)
+- `utilized_for` → **Assignment** (many)
 
 ### Tricycle
 
@@ -150,11 +153,12 @@ A tricycle belongs to a company's fleet and is assigned to riders over time.
 Status and condition are separate on purpose, because a tricycle can be `in_service` and `needs_repair` at the same time.
 
 - `property_of` → **Company** (one)
-- `assignment` → **Assignment** (many)
+- `operated_by` → **Rider** (one) `in_service_of` → **Assignment** (one)
+- `utilized_for` → **Assignment** (many) `in_service_of` → **Company** (one)
 
 ### Assignment
 
-Assignment links a company's tricycle to one of its riders at a point in time. A rider can only be assigned to one tricycle at a time. An assignment is done by the fleet manager of the fleet owner. It is meant to serve as audit data in the future.
+Assignment links a company's tricycle to one of its riders at a point in time. A rider can only be assigned to one tricycle at a time. An assignment is `assinged_by` the fleet manager of the fleet owner. It is meant to serve as audit data in the future.
 
 | Property   | Type     |                                             |
 | ---------- | -------- | ------------------------------------------- |
@@ -162,9 +166,10 @@ Assignment links a company's tricycle to one of its riders at a point in time. A
 | started_at | datetime |                                             |
 | ended_at   | datetime | `null` means the assignment is still active |
 
-- `rider` → **Rider** (one)
-- `tricycle` → **Tricycle** (one)
-- `assigned_by` → **FleetManager** (one)
+- `utilizes` → **Rider** (one) `in_service_of` → **Company** (one)
+- `property_of` → **Company** (one)
+- `utilizes` → **Tricycle** (one) `in_service_of` → **Company** (one)
+- `assigned_by` → **FleetManager** (one) `in_service_of` → **Company** (one)
 
 Because a rider and a tricycle each have **many** assignments, this entity is what gives the model history: you can see who rode which tricycle, when, and who assigned it.
 
@@ -177,20 +182,20 @@ Because a rider and a tricycle each have **many** assignments, this entity is wh
 | FleetManagerStatus | active, inactive, suspended          |
 | CompanyStatus      | active, shutdown                     |
 | TricycleStatus     | in_service, idle, impounded, retired |
-| TricycleCondition  | good, needs_repair, damaged          |
+| TricycleCondition  | operable, needs_repair, fully_damaged|
 
 ## The map
 
 ```mermaid
 erDiagram
-    Person       ||--o| Rider       : can_be_rider
-    Person       ||--o| FleetOwner  : can_be_fleet_owner
-    Person       ||--o| FleetManager: can_be_fleet_manager
+    Person       ||--o| Rider       : can_be
+    Person       ||--o| FleetOwner  : can_be
+    Person       ||--o| FleetManager: can_be
     FleetOwner   ||--o{ Company     : owns
     FleetManager ||--o| Company     : manages
-    Company      ||--o{ Tricycle    : fleet
-    Company      |o--o{ Rider       : employs
-    Rider        ||--o{ Assignment  : assignment
-    Tricycle     ||--o{ Assignment  : assignment
+    Company      ||--o{ Tricycle    : owns
+    Company      |o--o{ Rider       : employer_of
+    Rider        ||--o{ Assignment  : utilized_for
+    Tricycle     ||--o{ Assignment  : utilized_for
     FleetManager ||--o{ Assignment  : assigns
 ```
