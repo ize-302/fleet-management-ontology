@@ -9,7 +9,6 @@ entity:
     id:
       type: uuid
       unique: true
-      constraint: 
     
     first_name: 
       type: string
