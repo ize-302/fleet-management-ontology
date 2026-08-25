@@ -26,11 +26,15 @@ entity:
 
   relationships:
 
+    operated_by:
+      target: Rider
+      cardinality: one
+
     property_of:
       target: Company
       cardinality: one
 
-    assignment:
+    utilized_for:
       target: Assignment 
       cardinality: many
 
