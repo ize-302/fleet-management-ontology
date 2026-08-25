@@ -9,34 +9,44 @@ entity:
     id:
       type: uuid
       unique: true
+      constraint: 
     
     first_name: 
       type: string
+      constraint: [REGEX:/^[a-zA-Z -]{2,}/]
 
     last_name: 
       type: string
+      constraint: [REGEX:/^[a-zA-Z -]{2,}/]
 
     email:
       type: string
       unique: true
+      constraint: [URI:email]
 
     phone_number:
       type: string
+      constraint: [E.164:phone]
 
     address:
       type: string
+      constraint: [JSON:`{house_number:string,landmark:string,street_name:string,city_town:string,zipcode:string`]
 
   relationships:
 
-    can_be_rider:
+    can_be:
       target: Rider
       cardinality: zero..one
 
-    can_be_fleet_owner:
+    can_be:
       target: FleetOwner 
       cardinality: zero..one
 
-    can_be_fleet_manager:
+    can_be:
       target: FleetManager 
       cardinality: zero..one
+
+    in_service_of:
+      target: Company
+      cardinality: many
 
