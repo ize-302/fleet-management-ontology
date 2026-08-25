@@ -106,7 +106,7 @@ Manages the fleet and riders of a company on behalf of the fleet owner.
 
 - `is` → **Person** (one)
 - `manages` → **Company** (zero..one)
-- `assigns` → **Assignment** (many)
+- `assigns` → **Assignment** (many) `in_service_of` → **Company** (one)
 
 ### Company
 
@@ -119,9 +119,9 @@ A business that manages tricycle fleets, owned by the fleet owner and managed by
 | status   | CompanyStatus |        |
 
 - `property_of` → **FleetOwner** (one)
-- `managed_by` → **FleetManager** (zero..one)
+- `managed_by` → **FleetManager** (zero..one) `in_service_of` → <self>
 - `owns` → **Tricycle** (many)
-- `employer_of` → **Rider** (many)
+- `employer_of` → **Rider** (many) 
 - `owns` → **Assignment** (many)
 
 ### Rider
@@ -136,7 +136,7 @@ A rider is a person that is employed by a fleet company. A rider can be employed
 - `is` → **Person** (one)
 - `operates` → **Tricycle** (one) `in_service_of` → **Assignment** (one)
 - `works_for` → **Company** (zero..one)
-- `utilized_for` → **Assignment** (many)
+- `utilized_for` → **Assignment** (many) `in_service_of` → **Company** (one)
 
 ### Tricycle
 
