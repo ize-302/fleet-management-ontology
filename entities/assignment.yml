@@ -22,10 +22,14 @@ entity:
       target: FleetManager
       cardinality: one
 
-    rider:
+    utilizes:
       target: Rider
       cardinality: one
 
-    tricycle:
+    utilizes:
       target: Tricycle
+      cardinality: one
+
+    property_of:
+      target: Company
       cardinality: one
