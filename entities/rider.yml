@@ -23,6 +23,10 @@ entity:
       target: Assignment 
       cardinality: many
 
+    operates:
+      target: Tricycle
+      cardinality: many
+
     works_for:
       target: Company 
       cardinality: zero..one
