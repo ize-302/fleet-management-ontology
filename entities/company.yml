@@ -12,7 +12,7 @@ entity:
 
     name:
       type: string
-      constraint: [REGEX:/[a-zA-Z -)(]{2,}/]
+      constraint: [REGEX:/^[a-zA-Z -)(]{2,}$/]
 
     status:
       type: CompanyStatus
@@ -23,7 +23,7 @@ entity:
       target: FleetOwner
       cardinality: one
 
-    managed_by:
+    employer_of:
       target: FleetManager
       cardinality: zero..one
 
@@ -35,7 +35,7 @@ entity:
       target: Rider
       cardinality: many
 
-    owns:
+    utilizes_process:
       target: Assignment
       cardinality: many
 
