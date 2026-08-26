@@ -30,3 +30,7 @@ entity:
     works_for:
       target: Company 
       cardinality: zero..one
+
+    managed_by:
+      target: FleetManager
+      cardinality: zero..one
