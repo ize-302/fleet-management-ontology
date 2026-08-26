@@ -54,9 +54,9 @@ The **Company** is what ties the operation together. A fleet owner does not own 
 
 ```
 FleetOwner ──owns──▶ Company ──owns────▶ Tricycle
-                        |   \──employs──▶ Rider
+                        |   \──employer_of──▶ Rider
                         │
-                   managed_by
+                   employer_of
                         │
                         ▲ 
                    FleetManager ──assigns──▶ Assignment
@@ -77,9 +77,9 @@ A person's information. A person could be a rider and/or fleet owner and/or flee
 | phone_number | string |        |
 | address      | string |        |
 
-- `can_be` → **Rider** (zero..one) `in_service_of` → **Company** (zero..one)
-- `can_be` → **FleetOwner** (zero..one) `in_service_of` → **Company** (many)
-- `can_be` → **FleetManager** (zero..one) `in_service_of` → **Company** (zero..one)
+- `can_be_basic_employee` → **Rider** (zero..one) `in_service_of` → **Company** (zero..one)
+- `can_be_owner` → **FleetOwner** (zero..one) `in_service_of` → **Company** (many)
+- `can_be_manager_employee` → **FleetManager** (zero..one) `in_service_of` → **Company** (zero..one)
 
 ### FleetOwner
 
@@ -105,8 +105,10 @@ Manages the fleet and riders of a company on behalf of the fleet owner.
 | status   | FleetManagerStatus |        |
 
 - `is` → **Person** (one)
-- `manages` → **Company** (zero..one)
+- `works_for` → **Company** (zero..one)
 - `assigns` → **Assignment** (many) `in_service_of` → **Company** (one)
+- `manages` → **Tricycle** (many) `in_service_of` → **Company** (one)
+- `manages` → **Rider** (many) `in_service_of` → **Company** (one)
 
 ### Company
 
@@ -119,10 +121,10 @@ A business that manages tricycle fleets, owned by the fleet owner and managed by
 | status   | CompanyStatus |        |
 
 - `property_of` → **FleetOwner** (one)
-- `managed_by` → **FleetManager** (zero..one) `in_service_of` → <self>
+- `employer_of` → **FleetManager** (zero..one) `in_service_of` → #self
 - `owns` → **Tricycle** (many)
 - `employer_of` → **Rider** (many) 
-- `owns` → **Assignment** (many)
+- `utilizes_process` → **Assignment** (many) `in_service_of` → #self
 
 ### Rider
 
@@ -137,6 +139,7 @@ A rider is a person that is employed by a fleet company. A rider can be employed
 - `operates` → **Tricycle** (one) `in_service_of` → **Assignment** (one)
 - `works_for` → **Company** (zero..one)
 - `utilized_for` → **Assignment** (many) `in_service_of` → **Company** (one)
+- `managed_by` → **FleetManager** (one) `in_service_of` → **Company** (one)
 
 ### Tricycle
 
@@ -155,6 +158,7 @@ Status and condition are separate on purpose, because a tricycle can be `in_serv
 - `property_of` → **Company** (one)
 - `operated_by` → **Rider** (one) `in_service_of` → **Assignment** (one)
 - `utilized_for` → **Assignment** (many) `in_service_of` → **Company** (one)
+- `managed_by` → **FleetManager** (one) `in_service_of` → **Company** (one)
 
 ### Assignment
 
@@ -188,11 +192,11 @@ Because a rider and a tricycle each have **many** assignments, this entity is wh
 
 ```mermaid
 erDiagram
-    Person       ||--o| Rider       : can_be
-    Person       ||--o| FleetOwner  : can_be
-    Person       ||--o| FleetManager: can_be
+    Person       ||--o| Rider       : can_be_basic_employee
+    Person       ||--o| FleetOwner  : can_be_owner
+    Person       ||--o| FleetManager: can_be_manager_employee
     FleetOwner   ||--o{ Company     : owns
-    FleetManager ||--o| Company     : manages
+    FleetManager ||--o| Company     : employed_by
     Company      ||--o{ Tricycle    : owns
     Company      |o--o{ Rider       : employer_of
     Rider        ||--o{ Assignment  : utilized_for
