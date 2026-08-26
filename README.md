@@ -14,13 +14,13 @@ That is the point of writing one: the rules of the business live in a single pla
 
 ### The building blocks
 
-| Term             | What it means                                        | Example here                                     |
-| ---------------- | ---------------------------------------------------- | ------------------------------------------------ |
-| **Entity**       | A kind of thing that exists in the domain            | `Rider`, `Tricycle`, `Company`                   |
-| **Property**     | A fact stored on the entity itself                   | `Tricycle.plate_number` is a string              |
-| **Relationship** | A link from one entity to another                    | `Tricycle.property_of` points at a `Company`     |
-| **Cardinality**  | How many things are allowed at the far end of a link | `one`, `zero..one`, `many`                       |
-| **Enum**         | A fixed list of allowed values for a property        | `TricycleCondition`: good, needs_repair, damaged |
+| Term             | What it means                                        | Example here                                                     |
+| ---------------- | ---------------------------------------------------- | -----------------------------------------------------------------|
+| **Entity**       | A kind of thing that exists in the domain            | `Rider`, `Tricycle`, `Company`                                   |
+| **Property**     | A fact stored on the entity itself                   | `Tricycle.plate_number` is a _string_                            |
+| **Relationship** | A link from one entity to another                    | `Tricycle.property_of` points at a `Company`                     |
+| **Cardinality**  | How many things are allowed at the far end of a link | `one`, `zero..one`, `many`                                       |
+| **Enum**         | A fixed list of allowed values for a property        | `TricycleCondition`: _operable_, _needs_repair_, _fully_damaged_ |
 
 ### Reading cardinality
 
