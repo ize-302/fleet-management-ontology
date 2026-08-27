@@ -12,25 +12,30 @@ entity:
 
     name:
       type: string
+      constraint: [REGEX:/^[a-zA-Z -)(]{2,}$/]
 
     status:
       type: CompanyStatus
     
   relationships:
 
-    owner:
+    property_of:
       target: FleetOwner
       cardinality: one
 
-    managed_by:
+    employer_of:
       target: FleetManager
       cardinality: zero..one
 
-    fleet:
+    owns:
       target: Tricycle
       cardinality: many
 
-    employs:
+    employer_of:
       target: Rider
+      cardinality: many
+
+    utilizes_process:
+      target: Assignment
       cardinality: many
 

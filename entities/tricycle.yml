@@ -2,7 +2,7 @@ entity:
   name: Tricycle
 
   description: >
-    A tricycle is owned by a company and assigned to a rider by a fleet manager
+    A tricycle is owned by a company and assigned to a rider by a fleet manager. The fleet manager manages the condition and status of each tricycle.
 
   properties:
 
@@ -13,6 +13,7 @@ entity:
     plate_number:
       type: string
       unique: true
+      constraint: [REGEX:/^[A-Z]{3}[-]([0-9][0-9][1-9])[A-Z]{2}$/]
 
     engine_number:
       type: string
@@ -26,11 +27,18 @@ entity:
 
   relationships:
 
+    operated_by:
+      target: Rider
+      cardinality: one
+
     property_of:
       target: Company
       cardinality: one
 
-    assignment:
+    utilized_for:
       target: Assignment 
       cardinality: many
 
+    managed_by:
+      target: FleetManager
+      cardinality: zero..one

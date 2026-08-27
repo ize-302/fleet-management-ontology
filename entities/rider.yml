@@ -19,10 +19,18 @@ entity:
       target: Person
       cardinality: one
 
-    assignment:
+    utilized_for:
       target: Assignment 
+      cardinality: many
+
+    operates:
+      target: Tricycle
       cardinality: many
 
     works_for:
       target: Company 
+      cardinality: zero..one
+
+    managed_by:
+      target: FleetManager
       cardinality: zero..one

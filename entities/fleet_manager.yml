@@ -2,7 +2,7 @@ entity:
   name: FleetManager
 
   description: >
-    Manages the fleet and riders of a company on behalf of the fleet owner
+    Manages the fleet of tricycles and riders of a company on behalf of the fleet owner. Also, responsible for setting up assignments.
 
   properties:
 
@@ -19,10 +19,18 @@ entity:
       target: Person
       cardinality: one
 
-    manages:
+    works_for:
       target: Company 
       cardinality: zero..one
 
     assigns:
       target: Assignment
+      cardinality: many
+
+    manages:
+      target: Rider
+      cardinality: many
+
+    manages:
+      target: Tricycle
       cardinality: many
